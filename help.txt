@@ -1,0 +1,2 @@
+`-lastSolved <user> <amount>` - Returns the last questions a user has solved. Uses their LEETCODE username, NOT discord username!
+`-getQuestionWithID <ID>` - returns the question associated with the given ID
