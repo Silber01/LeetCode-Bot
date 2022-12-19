@@ -1,9 +1,11 @@
+import os
 
 from lastACs import *
 from getQuestion import *
-
+from setupPlayer import *
 import discord
 from discord.ext import commands
+from os.path import exists
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -15,6 +17,14 @@ botTitle = "LeetCode Bot"
 @client.event
 async def on_ready():
     print("I'm ready!")
+    if not exists("./servers"):
+        os.mkdir("./servers")
+    if not exists("players"):
+        os.mkdir("players")
+
+@client.before_invoke
+async def common(ctx):
+    await setUpPlayer(ctx)
 
 
 @client.command()
