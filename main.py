@@ -2,6 +2,9 @@ import os
 
 from lastACs import *
 from getQuestion import *
+from registerPlayer import *
+from unregisterPlayer import *
+from embedMsg import *
 from setupPlayer import *
 import discord
 from discord.ext import commands
@@ -45,6 +48,40 @@ async def lastSolved(ctx, user, amount=1):      # gets "amount" last questions u
 @client.command()
 async def getQuestionWithID(ctx, questionID):   # gets LeetCode question with given ID
     await showQuestion(ctx, questionID)
+
+@client.command()
+async def register(ctx, leetCodeName):
+    if getPlayerLCName(ctx) == "null":
+        await registerPlayer(ctx, leetCodeName)    # register LeetCode name for player
+    elif getPlayerLCName(ctx) != "null" or getPlayerLCName(ctx) != leetCodeName:
+        await changeNameEmbed(ctx, leetCodeName)
+
+        try:
+            msg = await client.wait_for("message", timeout=15)
+        except asyncio.TimeoutError:                           
+            await timeoutEmbed(ctx)             
+            return
+
+        if msg.content == "Y" or msg.content == "y": # set the new name for the player
+            await registerPlayer(ctx, leetCodeName)
+        else:
+            await changeNameDeclineEmbed(ctx, leetCodeName)      
+    
+
+@client.command()
+async def unregister(ctx):
+  await unregisteringEmbed(ctx)
+  try:
+      msg = await client.wait_for("message", timeout=15)
+  except asyncio.TimeoutError:                           
+      await timeoutEmbed(ctx)          
+      return
+
+  if msg.content == "Y" or msg.content == "y": 
+      await unregisterPlayer(ctx)               # Unregister player
+      await unregisteredEmbed(ctx)
+  else: 
+      pass
 
 with open("key.txt", "r") as readFile:          # get bot token and run
     bot_token = readFile.readline()
