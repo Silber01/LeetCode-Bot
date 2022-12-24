@@ -1,4 +1,6 @@
 {
   "NAME": "null",
-  "PLAYERS": []
+  "PLAYERS": [],
+  "LOTDCHANNEL": 0,
+  "LOTDPING": null
 }
