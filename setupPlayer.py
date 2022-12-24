@@ -4,7 +4,8 @@ import discord
 import json
 from os.path import exists
 
-async def setUpPlayer(ctx):
+
+def setUpPlayer(ctx):
     playerID = str(ctx.author.id)
     playerName = str(ctx.author.name)
     playerDiscriminator = str(ctx.author.discriminator)
