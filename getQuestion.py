@@ -1,7 +1,6 @@
 import discord
 import requests
 
-
 async def showQuestion(ctx, questionID):                        # calls method to get question with ID, and returns info
     embed = discord.Embed(title="LeetCode Bot")
     try:
@@ -25,7 +24,7 @@ async def showQuestion(ctx, questionID):                        # calls method t
     embed.description = f"\n**Name**: {name}\n**Difficulty**: {difficulty}\n\n {link}"
     await ctx.send(embed=embed)
 
-async def getQuestion(questionID):
+def getQuestion(questionID):
     query = f"""query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {{
       problemsetQuestionList: questionList(
         categorySlug: $categorySlug
@@ -36,7 +35,7 @@ async def getQuestion(questionID):
         total: totalNum
         questions: data {{
           difficulty
-          title
+          title 
           titleSlug
           paidOnly: isPaidOnly
         }}
