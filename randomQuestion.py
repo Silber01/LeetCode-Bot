@@ -29,36 +29,29 @@ def sortQuestions():
 sortQuestions()
 questions_id = easy + medium
 
-def storeQuestionId(questions_id):
-    if not exists('questionsList.json'):
-        data = {}
-        with open('questionsList.json', 'w') as writeFile:
-            json.dump(data, writeFile)
+# def storeQuestionId(questions_id):
+#     with open('./questions/questionsList.json', 'r') as readFile:
+#         questions_list = json.load(readFile)
 
-    with open('questionsList.json', 'r') as readFile:
-        questions_list = json.load(readFile)
+#     questions_list = questions_id
 
-    questions_list = questions_id
+#     with open('./questions/questionsList.json', 'w') as writeFile:
+#         json.dump(questions_list, writeFile)
 
-    with open('questionsList.json', 'w') as writeFile:
-        json.dump(questions_list, writeFile)
+# def shuffleID():
+#     random.shuffle(questions_id)
+#     # save recent id and list of shuffle id as a json file
+#     storeQuestionId(questions_id)
 
-def shuffleID():
-    random.shuffle(questions_id)
-    # save recent id and list of shuffle id as a json file
-    storeQuestionId(questions_id)
+with open('./questions/questionsList.json', 'w') as writeFile:
+    json.dump(random.shuffle(questions_id), writeFile)
 
 def getTodayQuestion():
-    shuffleID()
-    if not exists('todayQuestion.json'):
-        data = {"TODAY_DATE": "null", "LAST_INDEX": -1}
-        with open('todayQuestion.json', 'w') as writeFile:
-            json.dump(data, writeFile)
 
-    with open('todayQuestion.json', 'r') as readFile:
+    with open('./questions/todayQuestion.json', 'r') as readFile:
         today = json.load(readFile)
 
-    with open('questionsList.json', 'r') as readFile:
+    with open('./questions/questionsList.json', 'r') as readFile:
         questions_list = json.load(readFile)
 
     today_id = today["LAST_INDEX"] + 1
