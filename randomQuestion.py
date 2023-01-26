@@ -3,31 +3,31 @@ import random
 import asyncio
 import os
 import json
+import requests
 from os.path import exists
-from getAllQuestions import *
 from discord.ext import commands, tasks
 from getQuestion import *
 from lcUtils import *
 from checkTime import *
 
-questions = getAllQuestions()
-easy = []
-medium = []
-hard = []
+# questions = getAllQuestions()
+# easy = []
+# medium = []
+# hard = []
 
-def sortQuestions():
-    for i, q in enumerate(questions):
-        if not q["paidOnly"]:
-            difficulty = q["difficulty"]
-            if difficulty == "Easy":
-                easy.append(i)
-            elif difficulty == "Medium":
-                medium.append(i)
-            else:
-                hard.append(i)
+# def sortQuestions():
+#     for i, q in enumerate(questions):
+#         if not q["paidOnly"]:
+#             difficulty = q["difficulty"]
+#             if difficulty == "Easy":
+#                 easy.append(i)
+#             elif difficulty == "Medium":
+#                 medium.append(i)
+#             else:
+#                 hard.append(i)
 
-sortQuestions()
-questions_id = easy + medium
+# sortQuestions()
+# questions_id = easy + medium
 
 # def storeQuestionId(questions_id):
 #     with open('./questions/questionsList.json', 'r') as readFile:
@@ -38,13 +38,14 @@ questions_id = easy + medium
 #     with open('./questions/questionsList.json', 'w') as writeFile:
 #         json.dump(questions_list, writeFile)
 
+
 # def shuffleID():
 #     random.shuffle(questions_id)
-#     # save recent id and list of shuffle id as a json file
 #     storeQuestionId(questions_id)
 
-with open('./questions/questionsList.json', 'w') as writeFile:
-    json.dump(random.shuffle(questions_id), writeFile)
+
+# with open('./questions/questionsList.json', 'w') as writeFile:
+#     json.dump(random.shuffle(questions_id), writeFile)
 
 def getTodayQuestion():
 
