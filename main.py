@@ -3,23 +3,31 @@ from getQuestion import *
 from registerPlayer import *
 from setupPlayer import *
 from lcUtils import *
+from randomQuestion import *
 import discord
-from discord.ext import commands
+import schedule
+from discord.ext import commands, tasks
 from os.path import exists
+from datetime import *
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix='-', help_command=None, intents=intents)  # sets prefix, deletes default help command, and sets intents
 
-
-
 @client.event
-async def on_ready():
+async def on_ready(self):
     print("I'm ready!")
-    if not exists("./servers"):
+    if not exists("./servers"):                                      
         os.mkdir("./servers")
     if not exists("players"):
         os.mkdir("players")
+
+    while True:
+        dailyQuestion()
+        asyncio.sleep(10)
+        # every 10 seconds check if the date from that json file is yesterday
+
+
 
 @client.command()
 async def help(ctx):                            # shows the user what commands the bot has
@@ -43,7 +51,7 @@ async def getQuestionWithID(ctx, questionID):   # gets LeetCode question with gi
 
 @client.command()
 async def register(ctx, leetCodeName):
-    await handleRegister(ctx, leetCodeName, client)
+    await handleRegister(ctx, leetCodeName, client)             
 
 
 with open("key.txt", "r") as readFile:          # get bot token and run

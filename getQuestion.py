@@ -1,7 +1,6 @@
 import discord
 import requests
 
-
 async def showQuestion(ctx, questionID):                        # calls method to get question with ID, and returns info
     embed = discord.Embed(title="LeetCode Bot")
     try:
@@ -25,7 +24,7 @@ async def showQuestion(ctx, questionID):                        # calls method t
     embed.description = f"\n**Name**: {name}\n**Difficulty**: {difficulty}\n\n {link}"
     await ctx.send(embed=embed)
 
-async def getQuestion(questionID):
+def getQuestion(questionID):
     query = f"""query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {{
       problemsetQuestionList: questionList(
         categorySlug: $categorySlug
@@ -36,7 +35,7 @@ async def getQuestion(questionID):
         total: totalNum
         questions: data {{
           difficulty
-          title
+          title 
           titleSlug
           paidOnly: isPaidOnly
         }}
@@ -57,3 +56,32 @@ async def getQuestion(questionID):
     except IndexError:
         return "INVALID"
     return question                                                     # return dict of question info
+
+def getAllQuestions():
+    query = f"""query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {{
+      problemsetQuestionList: questionList(
+        categorySlug: $categorySlug
+        limit: $limit
+        skip: $skip
+        filters: $filters
+      ) {{
+        total: totalNum
+        questions: data {{
+          difficulty
+          title
+          titleSlug
+          paidOnly: isPaidOnly
+        }}
+      }}
+    }}"""
+    params = f"""{{
+      "categorySlug": "",
+      "skip": 0,
+      "limit": 2543,
+      "filters": {{ 
+      }}
+    }}"""
+    url = 'https://leetcode.com/graphql'                                # sends above query and params to this url
+    r = requests.post(url, json={'query': query, 'variables': params})
+    questions_list = (r.json())["data"]["problemsetQuestionList"]['questions']   # gets the problems returned from query
+    return questions_list      
