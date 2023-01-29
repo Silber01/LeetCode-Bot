@@ -84,4 +84,4 @@ def getAllQuestions():
     url = 'https://leetcode.com/graphql'                                # sends above query and params to this url
     r = requests.post(url, json={'query': query, 'variables': params})
     questions_list = (r.json())["data"]["problemsetQuestionList"]['questions']   # gets the problems returned from query
-    return questions_list      
+    return questions_list

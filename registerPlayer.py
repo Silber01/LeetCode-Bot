@@ -2,8 +2,6 @@ import os
 from urllib.request import urlopen
 
 import discord
-import json
-from os.path import exists
 import asyncio
 from discord.ext import commands
 from lcUtils import *
