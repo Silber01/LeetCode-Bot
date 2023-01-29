@@ -6,60 +6,59 @@ import json
 import requests
 from os.path import exists
 from discord.ext import commands, tasks
-from getQuestion import *
+from getQuestionFromLC import *
 from lcUtils import *
 from datetime import *
 
-# questions = getAllQuestions()
-# easy = []
-# medium = []
-# hard = []
 
-# def sortQuestions():
-#     for i, q in enumerate(questions):
-#         if not q["paidOnly"]:
-#             difficulty = q["difficulty"]
-#             if difficulty == "Easy":
-#                 easy.append(i)
-#             elif difficulty == "Medium":
-#                 medium.append(i)
-#             else:
-#                 hard.append(i)
-
-# sortQuestions()
-# questions_id = easy + medium
-
-# def storeQuestionId(questions_id):
-#     with open('./questions/questionsList.json', 'r') as readFile:
-#         questions_list = json.load(readFile)
-
-#     questions_list = questions_id
-
-#     with open('./questions/questionsList.json', 'w') as writeFile:
-#         json.dump(questions_list, writeFile)
+def storeQuestionId(questionsList):
+    questions_list = {"QUESTIONS": questionsList}
+    with open('./questions/questionsList.json', 'w') as writeFile:
+        json.dump(questions_list, writeFile)
 
 
-# def shuffleID():
-#     random.shuffle(questions_id)
-#     storeQuestionId(questions_id)
+def shuffleIDs(questionsList):
+    random.shuffle(questionsList)
 
 
-# with open('./questions/questionsList.json', 'w') as writeFile:
-#     json.dump(random.shuffle(questions_id), writeFile)
+def sortQuestions(questions, easy, medium, hard):
+    for i, q in enumerate(questions):
+        i += 1
+        if not q["paidOnly"]:
+            difficulty = q["difficulty"]
+            if difficulty == "Easy":
+                easy.append(i)
+            elif difficulty == "Medium":
+                medium.append(i)
+            else:
+                hard.append(i)
+
+def makeQuestionsList():
+    questions = getAllQuestions()
+    easy = []
+    medium = []
+    hard = []
+    sortQuestions(questions, easy, medium, hard)
+    questionsList = easy + medium
+    shuffleIDs(questionsList)
+    storeQuestionId(questionsList)
+
+#makeQuestionsList()           # only run this to regenerate the questions list. Try to avoid doing this!
+
 
 def getTodayQuestion():
-
     with open('./questions/todayQuestion.json', 'r') as readFile:
         today = json.load(readFile)
 
     with open('./questions/questionsList.json', 'r') as readFile:
-        questions_list = json.load(readFile)
+        questions_list = json.load(readFile)["QUESTIONS"]
 
-    today_id = today["LAST_INDEX"] + 1
+    today_id = today["LASTINDEX"] + 1
     today_question = getQuestion(questions_list[today_id])
 
-    today["LAST_INDEX"] += 1
-    today["TODAY_DATE"] = datetime.now().date().isoformat()
+    today["LASTINDEX"] += 1
+    today["TODAYDATE"] = str((datetime.utcnow() + timedelta(hours=10)).date())
+    today["QUESTIONID"] = questions_list[today_id]
     
     with open('./questions/todayQuestion.json', 'w') as writeFile:
         json.dump(today, writeFile)
@@ -71,7 +70,7 @@ def checkNewDate():
     curr_date = (datetime.utcnow() + timedelta(hours=10)).date()
     with open('questions/todayQuestion.json', 'r') as readFile:
         today = json.load(readFile)
-    return str(curr_date) != today["TODAY_DATE"]
+    return str(curr_date) != today["TODAYDATE"]
 
 
 def dailyQuestion():
