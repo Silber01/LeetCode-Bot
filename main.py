@@ -1,21 +1,16 @@
 from lastACs import *
-from getQuestion import *
 from registerPlayer import *
-from setupPlayer import *
-from lcUtils import *
 from randomQuestion import *
 import discord
-import schedule
 from discord.ext import commands, tasks
-from os.path import exists
-from datetime import *
+from checkServerExists import *
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix='-', help_command=None, intents=intents)  # sets prefix, deletes default help command, and sets intents
 
 @client.event
-async def on_ready(self):
+async def on_ready():
     print("I'm ready!")
     if not exists("./servers"):                                      
         os.mkdir("./servers")
@@ -24,10 +19,12 @@ async def on_ready(self):
 
     while True:
         dailyQuestion()
-        asyncio.sleep(10)
+        await asyncio.sleep(10)
         # every 10 seconds check if the date from that json file is yesterday
 
-
+@client.before_invoke
+async def common(ctx):
+    checkServerExists(ctx)
 
 @client.command()
 async def help(ctx):                            # shows the user what commands the bot has

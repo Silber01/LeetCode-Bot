@@ -8,7 +8,7 @@ from os.path import exists
 from discord.ext import commands, tasks
 from getQuestion import *
 from lcUtils import *
-from checkTime import *
+from datetime import *
 
 # questions = getAllQuestions()
 # easy = []
@@ -61,18 +61,24 @@ def getTodayQuestion():
     today["LAST_INDEX"] += 1
     today["TODAY_DATE"] = datetime.now().date().isoformat()
     
-    with open('todayQuestion.json', 'w') as writeFile:
+    with open('./questions/todayQuestion.json', 'w') as writeFile:
         json.dump(today, writeFile)
 
     return today_question
 
 
+def checkNewDate():
+    curr_date = (datetime.utcnow() + timedelta(hours=10)).date()
+    with open('questions/todayQuestion.json', 'r') as readFile:
+        today = json.load(readFile)
+    return str(curr_date) != today["TODAY_DATE"]
+
+
 def dailyQuestion():
-    if checkNewDate() and check6AmPST():    
+    if checkNewDate():
         question = getTodayQuestion()
         url = "https://leetcode.com/problems/" + question["titleSlug"]
         diff = question["difficulty"].lower()
         title = question["title"]
         output = f"Today's {diff} question: {title} \n {url} \n if you're new, do `-help` to learn how to play"
-
-    print(output)
+        print(output)
