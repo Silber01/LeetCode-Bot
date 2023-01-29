@@ -9,6 +9,7 @@ import schedule
 from discord.ext import commands, tasks
 from os.path import exists
 from datetime import *
+from checkServerExists import *
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -27,7 +28,9 @@ async def on_ready(self):
         asyncio.sleep(10)
         # every 10 seconds check if the date from that json file is yesterday
 
-
+@client.before_invoke
+async def common(ctx):
+    checkServerExists(ctx)
 
 @client.command()
 async def help(ctx):                            # shows the user what commands the bot has
