@@ -1,9 +1,14 @@
-from lastACs import *
-from registerPlayer import *
-from randomQuestion import *
+import asyncio
+import os
+from os.path import exists
 import discord
 from discord.ext import commands, tasks
-from checkServerExists import *
+from lcUtils import *
+import lastACs
+import registerPlayer
+import getTodaysQuestion
+import checkServerExists
+import submit
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -18,13 +23,14 @@ async def on_ready():
         os.mkdir("players")
 
     while True:
-        dailyQuestion()
+        getTodaysQuestion.dailyQuestion()
         await asyncio.sleep(10)
         # every 10 seconds check if the date from that json file is yesterday
 
 @client.before_invoke
 async def common(ctx):
-    checkServerExists(ctx)
+    checkServerExists.checkServerExists(ctx)
+
 
 @client.command()
 async def help(ctx):                            # shows the user what commands the bot has
@@ -38,17 +44,23 @@ async def help(ctx):                            # shows the user what commands t
 
 @client.command()
 async def lastSolved(ctx, user, amount=1):      # gets "amount" last questions user has solved
-    await showLastSolved(ctx, user, amount)
+    await lastACs.showLastSolved(ctx, user, amount)
 
 
 @client.command()
 async def getQuestionWithID(ctx, questionID):   # gets LeetCode question with given ID
-    await showQuestion(ctx, questionID)
+    await getTodaysQuestion.showQuestion(ctx, questionID)
 
 
 @client.command()
 async def register(ctx, leetCodeName):
-    await handleRegister(ctx, leetCodeName, client)             
+    await registerPlayer.handleRegister(ctx, leetCodeName, client)
+
+
+@client.command()
+async def submit(ctx):
+    await submit.submit(ctx)
+
 
 
 with open("key.txt", "r") as readFile:          # get bot token and run
