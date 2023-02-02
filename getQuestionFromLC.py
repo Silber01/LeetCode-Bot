@@ -11,7 +11,7 @@ async def showQuestion(ctx, questionID):                        # calls method t
         embed.description = f"{questionID} is not a valid ID."
         await ctx.send(embed=embed)
         return
-    question = await getQuestion(questionID)                    # call method to get question ID
+    question = getQuestion(questionID)                    # call method to get question ID
     if question == "INVALID":                                   # if return is invalid, return an error message
         embed.colour = discord.Colour.red()
         embed.description = f"{questionID} is not a valid ID."
@@ -21,7 +21,7 @@ async def showQuestion(ctx, questionID):                        # calls method t
     embed.colour = discord.Colour.purple()
     name = question["title"]
     difficulty = question["difficulty"]
-    link = "https://leetcode.com/problems/" + question["titleSlug"] #titleSlug is what goes after /problems/ in the URL
+    link = "https://leetcode.com/problems/" + question["titleSlug"]  # titleSlug is what goes after /problems/ in the URL
     embed.description = f"\n**Name**: {name}\n**Difficulty**: {difficulty}\n\n {link}"
     await ctx.send(embed=embed)
 

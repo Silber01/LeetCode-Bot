@@ -5,9 +5,12 @@ from datetime import datetime
 
 
 async def showLastSolved(ctx, user, amount):
-    acs = getLastACs(user, amount)                                      # calls method to get last AC's (all clears)
     embed = discord.Embed(title="LeetCode Bot")
     embed.colour = discord.Colour.purple()
+    embed.description = "Retrieving Data..."
+    waitMsg = await ctx.send(embed=embed)
+    acs = getLastACs(user, amount)                                      # calls method to get last AC's (all clears)
+    print(acs)
     if acs == "INVALID":                                                # returns this if user doesnt exist
         embed.colour = discord.Colour.red()
         embed.description = "Sorry, that user does not exist."
@@ -19,7 +22,7 @@ async def showLastSolved(ctx, user, amount):
         name = ac["title"]
         date = datetime.fromtimestamp(int(ac["timestamp"]))
         embed.description += f"\n\n**Name**: {name}\n **Date**: {date}"
-    await ctx.send(embed=embed)
+    await waitMsg.edit(embed=embed)
 
 
 def getLastACs(user, amount):
