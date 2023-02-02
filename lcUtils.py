@@ -18,3 +18,8 @@ def setPlayer(playerID, playerData):
 
 def getEmbed():
     return discord.Embed(title="LeetCode Bot")
+
+
+def getTodayQuestion():
+    with open("questions/todayQuestion.json", "r") as readFile:
+        return json.load(readFile)
