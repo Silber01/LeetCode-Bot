@@ -8,7 +8,7 @@ import lastACs
 import registerPlayer
 import getTodaysQuestion
 import checkServerExists
-import submit
+import submit as submitFunc
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -59,7 +59,7 @@ async def register(ctx, leetCodeName):
 
 @client.command()
 async def submit(ctx):
-    await submit.submit(ctx)
+    await submitFunc.submit(ctx)
 
 
 

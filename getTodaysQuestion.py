@@ -27,7 +27,9 @@ def getTodayQuestion():
     today["LASTINDEX"] += 1
     today["TODAYDATE"] = str((datetime.utcnow() + timedelta(hours=10)).date())
     today["QUESTIONID"] = questions_list[today_id]
-    today["QUESTIONNAME"] = today_question["titleSlug"]
+    today["QUESTIONNAME"] = today_question["title"]
+    today["QUESTIONSLUG"] = today_question["titleSlug"]
+    today["DIFFICULTY"] = today_question["difficulty"]
     
     with open('./questions/todayQuestion.json', 'w') as writeFile:
         json.dump(today, writeFile)
