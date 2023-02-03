@@ -34,7 +34,7 @@ def getTodayQuestion():
     with open('./questions/todayQuestion.json', 'w') as writeFile:
         json.dump(today, writeFile)
 
-    return today_question
+    return today_question   
 
 
 def checkNewDate():

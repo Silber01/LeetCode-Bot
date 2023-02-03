@@ -61,6 +61,17 @@ async def register(ctx, leetCodeName):
 async def submit(ctx):
     await submitFunc.submit(ctx)
 
+@client.command()
+async def lotd(ctx):
+    embed = getEmbed()
+    question = getTodayQuestion()
+    url = "https://leetcode.com/problems/" + question["QUESTIONSLUG"]
+    diff = question["DIFFICULTY"]
+    title = question["QUESTIONNAME"]
+
+    embed.description = f"Today's {diff} question: {title} \n {url} \n if you're new, do `-help` to learn how to play"
+    embed.colour = discord.Colour.blue()
+    await ctx.send(embed=embed)
 
 
 with open("key.txt", "r") as readFile:          # get bot token and run
