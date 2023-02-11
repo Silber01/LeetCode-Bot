@@ -3,7 +3,7 @@ from collections import defaultdict
 import copy
 from getQuestionFromLC import getAllQuestions
 
-setlist= "neetcode150"
+setlist= "blind75"
 problemNames = open(f"problemSetInfo/{setlist}problems.txt", "r")
 problemTopics = open(f"problemSetInfo/{setlist}Topics.txt", "r")
 probList = problemNames.read().split("\n")
@@ -49,3 +49,17 @@ with open(f"problemSetInfo/{setlist}problems.json", "w") as writeFile:
 if setlist == "neetcode150":
     with open(f"problemSetInfo/setlistProblemIDs.json", "w") as writeFile:
         json.dump(setlistProblems, writeFile)
+elif setlist == "blind75":
+    print(probList)
+    with open("problemSetInfo/setlistProblemIDs.json", "r") as readFile:
+        problemIDs = json.load(readFile)
+    for p in problemIDs["IDs"]:
+        p = p[tuple(p.keys())[0]]
+        print(p["TITLE"])
+        if p["TITLE"] in probList:
+            p["INBLIND75"] = True
+        else:
+            p["INBLIND75"] = False
+    with open(f"problemSetInfo/setlistProblemIDs.json", "w") as writeFile:
+        json.dump(problemIDs, writeFile)
+
