@@ -22,6 +22,7 @@ for b in topicList:
     i += 1
 
 problemInfo = defaultdict(lambda: [])
+setlistProblems = {"IDs": []}
 probsFound = set()
 allQuestions = getAllQuestions()
 for problem in problemTopic:  # purposefully inefficient to preserve order, not really that important to optimize
@@ -34,6 +35,7 @@ for problem in problemTopic:  # purposefully inefficient to preserve order, not 
             newProblem["URL"] = "https://leetcode.com/problems/" + q["titleSlug"]
             newProblem["DIFFICULTY"] = q["difficulty"]
             newProblem["ID"] = i + 1
+            setlistProblems["IDs"].append(i + 1)
             topic = problemTopic[q["title"].lower()]
             problemInfo[topic].append(newProblem)
             isFound = True
@@ -42,3 +44,8 @@ for problem in problemTopic:  # purposefully inefficient to preserve order, not 
 
 with open(f"problemSetInfo/{setlist}problems.json", "w") as writeFile:
     json.dump(problemInfo, writeFile)
+
+if setlist == "neetcode150":
+    setlistProblems["IDs"].sort()
+    with open(f"problemSetInfo/setlistProblemIDs.json", "w") as writeFile:
+        json.dump(setlistProblems, writeFile)
