@@ -2,6 +2,7 @@ import random
 from getQuestionFromLC import *
 from lcUtils import *
 from datetime import *
+import os.path
 
 
 def dailyQuestion():
@@ -10,9 +11,17 @@ def dailyQuestion():
         url = "https://leetcode.com/problems/" + question["titleSlug"]
         diff = question["difficulty"].lower()
         title = question["title"]
-
         output = f"Today's {diff} question: {title} \n {url} \n if you're new, do `-help` to learn how to play"
         print(output)
+
+        for playerFile in os.listdir("players"):                        # resets all player's "HASSOLVEDTODAY property to false
+            with open(f"players/{playerFile}", "r") as readFile:
+                account = json.load(readFile)
+            account["HASSOLVEDTODAY"] = False
+            with open(f"players/{playerFile}", "w") as writeFile:
+                json.dump(account, writeFile)
+
+
 
 def getTodayQuestion():
     with open('./questions/todayQuestion.json', 'r') as readFile:

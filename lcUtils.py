@@ -16,6 +16,7 @@ def setPlayer(playerID, playerData):
     with open(f"players/{playerID}.json", "w") as writeFile:
         json.dump(playerData, writeFile)
 
+
 def getEmbed():
     return discord.Embed(title="LeetCode Bot")
 
