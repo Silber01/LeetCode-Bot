@@ -14,6 +14,6 @@ def checkServerExists(ctx):
         with open(f"./servers/{serverID}.json", "r") as readFile:
             server = json.load(readFile)
     if ctx.author.id not in server["PLAYERS"]:
-        server["PLAYERS"].append(ctx.author.id)
+        server["PLAYERS"].append(ctx.author.id) 
         with open(f"./servers/{serverID}.json", "w") as writeFile:
             json.dump(server, writeFile)

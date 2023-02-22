@@ -3,16 +3,26 @@ from getQuestionFromLC import *
 from lcUtils import *
 from datetime import *
 import os.path
+import discord
+import json
 
-
-def dailyQuestion():
+# Method to check if the date has changed, if it has, it will generate a new question and send it to the channel
+def dailyQuestion(client):
     if checkNewDate():
+        embed = getEmbed()
         question = getTodayQuestion()
         url = "https://leetcode.com/problems/" + question["titleSlug"]
         diff = question["difficulty"].lower()
         title = question["title"]
-        output = f"Today's {diff} question: {title} \n {url} \n if you're new, do `-help` to learn how to play"
-        print(output)
+
+        embed.description = f"Today's {diff} question: {title} \n {url} \n if you're new, do `-help` to learn how to play"
+        embed.colour = discord.Colour.blue()
+
+        for file in os.listdir("servers"):
+            with open(f"servers/{file}", "r") as readFile:
+                server = json.load(readFile)
+            channelId = server['LOTDCHANNEL']
+            client.get_channel(channelId).send(embed=embed)
 
         for playerFile in os.listdir("players"):                        # resets all player's "HASSOLVEDTODAY property to false
             with open(f"players/{playerFile}", "r") as readFile:
@@ -20,9 +30,7 @@ def dailyQuestion():
             account["HASSOLVEDTODAY"] = False
             with open(f"players/{playerFile}", "w") as writeFile:
                 json.dump(account, writeFile)
-
-
-
+                
 def getTodayQuestion():
     with open('./questions/todayQuestion.json', 'r') as readFile:
         today = json.load(readFile)
