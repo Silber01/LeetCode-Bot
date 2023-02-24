@@ -24,7 +24,7 @@ async def on_ready():
         os.mkdir("players")
 
     while True:
-        getTodaysQuestion.dailyQuestion(client)
+        await getTodaysQuestion.dailyQuestion(client)
         await asyncio.sleep(10)
         # every 10 seconds check if the date from that json file is yesterday
 
