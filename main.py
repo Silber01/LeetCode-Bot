@@ -9,6 +9,7 @@ import registerPlayer
 import getTodaysQuestion
 import checkServerExists
 import submit as submitFunc
+from getChannel import getChannel
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -23,14 +24,13 @@ async def on_ready():
         os.mkdir("players")
 
     while True:
-        getTodaysQuestion.dailyQuestion()
+        await getTodaysQuestion.dailyQuestion(client)
         await asyncio.sleep(10)
         # every 10 seconds check if the date from that json file is yesterday
 
 @client.before_invoke
 async def common(ctx):
     checkServerExists.checkServerExists(ctx)
-
 
 @client.command()
 async def help(ctx):                            # shows the user what commands the bot has
@@ -41,6 +41,10 @@ async def help(ctx):                            # shows the user what commands t
     embed.colour = discord.Colour.purple()
     await ctx.send(embed=embed)
 
+# ADMIN COMMANDS
+@client.command()
+async def setChannel(ctx):
+    await getChannel(ctx)
 
 @client.command()
 async def lastSolved(ctx, user, amount=1):      # gets "amount" last questions user has solved
