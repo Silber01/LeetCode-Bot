@@ -10,6 +10,7 @@ import getTodaysQuestion
 import checkServerExists
 import submit as submitFunc
 from getChannel import getChannel
+from getStats import getStats
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -77,6 +78,9 @@ async def lotd(ctx):
     embed.colour = discord.Colour.blue()
     await ctx.send(embed=embed)
 
+@client.command()
+async def stats(ctx):
+    await getStats(ctx)
 
 with open("key.txt", "r") as readFile:          # get bot token and run
     bot_token = readFile.readline()
