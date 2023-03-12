@@ -11,6 +11,7 @@ import checkServerExists
 import submit as submitFunc
 from getChannel import getChannel
 from getStats import getStats
+from blind75Stat import getBlind75Stats
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -81,6 +82,10 @@ async def lotd(ctx):
 @client.command()
 async def stats(ctx):
     await getStats(ctx)
+
+@client.command()
+async def blind75(ctx):
+    await getBlind75Stats(ctx)
 
 with open("key.txt", "r") as readFile:          # get bot token and run
     bot_token = readFile.readline()
