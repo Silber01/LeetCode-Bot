@@ -27,9 +27,9 @@ async def getBlind75Stats(ctx):
 
     for topic in blind75problems:                       # loop through the topics
         # loop through the problems in the topic
-        for blind75Problem in blind75problems[topic]:
+        for problem in blind75problems[topic]:
             # check if the problem is in the topic
-            if blind75Problem["ID"] in playerBlind75Solved:
+            if problem["ID"] in playerBlind75Solved:
                 # if it is, increment the solved count
                 progress[f"{index}. {topic}"]["Solved"] += 1
 
@@ -43,7 +43,8 @@ async def getBlind75Stats(ctx):
     for topic in progress:
         rate = int(progress[topic]['Solved'] / progress[topic]['Total']*20)
         progress_bar = "█"*rate
-        embed.description += "```{:<27} ({}/{}) [{}]``` \n".format(topic, progress[topic]['Solved'], progress[topic]['Total'], progress_bar.ljust(20))
+        embed.description += "```{:<27} ({}/{}) [{}]``` \n".format(
+            topic, progress[topic]['Solved'], progress[topic]['Total'], progress_bar.ljust(20))
         # embed.description += f"```{topic} ({progress[topic]['Solved']}/{progress[topic]['Total']}) {progress_bar}``` \n"
         embed.colour = discord.Colour.gold()
 

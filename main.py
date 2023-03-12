@@ -12,6 +12,7 @@ import submit as submitFunc
 from getChannel import getChannel
 from getStats import getStats
 from blind75Stat import getBlind75Stats
+from neetcode150Stat import getNeetcode150Stats
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -86,6 +87,10 @@ async def stats(ctx):
 @client.command()
 async def blind75(ctx):
     await getBlind75Stats(ctx)
+
+@client.command()
+async def neetcode150(ctx):
+    await getNeetcode150Stats(ctx)
 
 with open("key.txt", "r") as readFile:          # get bot token and run
     bot_token = readFile.readline()
