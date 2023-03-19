@@ -6,13 +6,13 @@ from discord.ext import commands, tasks
 from lcUtils import *
 import lastACs
 import registerPlayer
+import setupPlayer
 import getTodaysQuestion
 import checkServerExists
 import submit as submitFunc
 from getChannel import getChannel
 from getStats import getStats
-from blind75Stat import getBlind75Stats
-from neetcode150Stat import getNeetcode150Stats
+import getSetlistStats
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -34,6 +34,7 @@ async def on_ready():
 @client.before_invoke
 async def common(ctx):
     checkServerExists.checkServerExists(ctx)
+    setupPlayer.setUpPlayer(ctx)
 
 @client.command()
 async def help(ctx):                            # shows the user what commands the bot has
@@ -86,11 +87,11 @@ async def stats(ctx):
 
 @client.command()
 async def blind75(ctx):
-    await getBlind75Stats(ctx)
+    await getSetlistStats.getSetlistStats(ctx, "blind75")
 
 @client.command()
 async def neetcode150(ctx):
-    await getNeetcode150Stats(ctx)
+    await getSetlistStats.getSetlistStats(ctx, "neetcode150")
 
 with open("key.txt", "r") as readFile:          # get bot token and run
     bot_token = readFile.readline()
