@@ -10,7 +10,7 @@ import setupPlayer
 import getTodaysQuestion
 import checkServerExists
 import submit as submitFunc
-from getChannel import getChannel
+import setUpServer
 from getStats import getStats
 import getSetlistStats
 
@@ -48,7 +48,11 @@ async def help(ctx):                            # shows the user what commands t
 # ADMIN COMMANDS
 @client.command()
 async def setChannel(ctx):
-    await getChannel(ctx)
+    await setUpServer.setChannel(ctx)
+
+@client.command()
+async def setPing(ctx, ping=None):
+    await setUpServer.setPing(ctx, ping)
 
 @client.command()
 async def lastSolved(ctx, user, amount=1):      # gets "amount" last questions user has solved
@@ -61,7 +65,7 @@ async def getQuestionWithID(ctx, questionID):   # gets LeetCode question with gi
 
 
 @client.command()
-async def register(ctx, leetCodeName = None):
+async def register(ctx, leetCodeName=None):
     await registerPlayer.handleRegister(ctx, leetCodeName, client)
 
 
