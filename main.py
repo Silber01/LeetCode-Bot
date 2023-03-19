@@ -6,13 +6,13 @@ from discord.ext import commands, tasks
 from lcUtils import *
 import lastACs
 import registerPlayer
+import setupPlayer
 import getTodaysQuestion
 import checkServerExists
 import submit as submitFunc
-from getChannel import getChannel
+import setUpServer
 from getStats import getStats
-from blind75Stat import getBlind75Stats
-from neetcode150Stat import getNeetcode150Stats
+import getSetlistStats
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -34,6 +34,7 @@ async def on_ready():
 @client.before_invoke
 async def common(ctx):
     checkServerExists.checkServerExists(ctx)
+    setupPlayer.setUpPlayer(ctx)
 
 @client.command()
 async def help(ctx):                            # shows the user what commands the bot has
@@ -47,7 +48,11 @@ async def help(ctx):                            # shows the user what commands t
 # ADMIN COMMANDS
 @client.command()
 async def setChannel(ctx):
-    await getChannel(ctx)
+    await setUpServer.setChannel(ctx)
+
+@client.command()
+async def setPing(ctx, ping=None):
+    await setUpServer.setPing(ctx, ping)
 
 @client.command()
 async def lastSolved(ctx, user, amount=1):      # gets "amount" last questions user has solved
@@ -60,7 +65,7 @@ async def getQuestionWithID(ctx, questionID):   # gets LeetCode question with gi
 
 
 @client.command()
-async def register(ctx, leetCodeName):
+async def register(ctx, leetCodeName=None):
     await registerPlayer.handleRegister(ctx, leetCodeName, client)
 
 
@@ -85,12 +90,19 @@ async def stats(ctx):
     await getStats(ctx)
 
 @client.command()
-async def blind75(ctx):
-    await getBlind75Stats(ctx)
+async def blind75(ctx, topic=None):
+    if topic is None:
+        await getSetlistStats.getSetlistStats(ctx, "blind75")
+    else:
+        await getSetlistStats.getSetlistTopicStats(ctx, "blind75", topic)
+
 
 @client.command()
-async def neetcode150(ctx):
-    await getNeetcode150Stats(ctx)
+async def neetcode150(ctx, topic=None):
+    if topic is None:
+        await getSetlistStats.getSetlistStats(ctx, "neetcode150")
+    else:
+        await getSetlistStats.getSetlistTopicStats(ctx, "neetcode150", topic)
 
 with open("key.txt", "r") as readFile:          # get bot token and run
     bot_token = readFile.readline()

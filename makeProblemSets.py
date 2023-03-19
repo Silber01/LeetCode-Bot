@@ -68,5 +68,20 @@ def setProblems(setlist):
             json.dump(setlistProblems, writeFile)
         print(i)
 
-setProblems("neetcode150")
-setProblems("blind75")
+# setProblems("neetcode150")
+# setProblems("blind75")
+
+def makeTitleSlugToID():
+    with open(f"problemSetInfo/setlistProblemIDs.json", "r") as readFile:
+        setlist = json.load(readFile)
+    titleSlugToID = {}
+    for id in setlist["ID"]:
+        url = setlist["ID"][id]["URL"]
+        titleslug = url[url.find("s/") + 2:]
+        titleSlugToID[titleslug] = id
+    setlist["NAME"] = titleSlugToID
+    with open(f"problemSetInfo/setlistProblemIDs.json", "w") as writeFile:
+        json.dump(setlist, writeFile)
+
+
+makeTitleSlugToID()

@@ -25,6 +25,8 @@ async def dailyQuestion(client):
             channelId = server['LOTDCHANNEL']
             channelCtx = client.get_channel(channelId)
             if channelCtx:
+                if server["LOTDPING"]:
+                    await channelCtx.send(server["LOTDPING"])
                 await channelCtx.send(embed=embed)
 
         for playerFile in os.listdir("players"):  # resets all player's "HASSOLVEDTODAY property to false
