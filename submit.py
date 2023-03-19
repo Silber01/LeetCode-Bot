@@ -8,11 +8,10 @@ from lcUtils import *
 
 async def submit(ctx):
     embed = getEmbed()
-    try:                                                            # get player's info
-        player = getPlayer(ctx.author.id)
-    except FileNotFoundError:                                       # if player does not exist, ask to register and return
+    player = getPlayer(ctx.author.id)
+    if not player["LEETCODENAME"]:
+        embed.description = "You have not registered your Leetcode name yet. Use `-register <LeetCode name>` to register."
         embed.colour = discord.Colour.red()
-        embed.description = "You need to register your leetcode account! Do `-register <leetcode_name>` to register!"
         await ctx.send(embed=embed)
         return
     embed.colour = discord.Colour.purple()

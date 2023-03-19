@@ -61,7 +61,7 @@ async def getQuestionWithID(ctx, questionID):   # gets LeetCode question with gi
 
 
 @client.command()
-async def register(ctx, leetCodeName):
+async def register(ctx, leetCodeName = None):
     await registerPlayer.handleRegister(ctx, leetCodeName, client)
 
 
@@ -86,12 +86,19 @@ async def stats(ctx):
     await getStats(ctx)
 
 @client.command()
-async def blind75(ctx):
-    await getSetlistStats.getSetlistStats(ctx, "blind75")
+async def blind75(ctx, topic=None):
+    if topic is None:
+        await getSetlistStats.getSetlistStats(ctx, "blind75")
+    else:
+        await getSetlistStats.getSetlistTopicStats(ctx, "blind75", topic)
+
 
 @client.command()
-async def neetcode150(ctx):
-    await getSetlistStats.getSetlistStats(ctx, "neetcode150")
+async def neetcode150(ctx, topic=None):
+    if topic is None:
+        await getSetlistStats.getSetlistStats(ctx, "neetcode150")
+    else:
+        await getSetlistStats.getSetlistTopicStats(ctx, "neetcode150", topic)
 
 with open("key.txt", "r") as readFile:          # get bot token and run
     bot_token = readFile.readline()

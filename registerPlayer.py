@@ -11,6 +11,11 @@ from setupPlayer import *
 async def handleRegister(ctx, leetCodeName, client):
     playerInfo = getPlayer(ctx.author.id)
     embed = getEmbed()
+    if leetCodeName is None:
+        embed.color = discord.Colour.red()
+        embed.description = "Please provide your leetcode username and try again.\nSyntax: `-register <leetcodeName>` (with no angle brackets)."
+        await ctx.send(embed=embed)
+        return
     if not checkIfAccExists(leetCodeName):
         embed.description = f"{leetCodeName} is not a valid LeetCode account! Make sure that you are using the name of your LeetCode account."
         embed.colour = discord.Colour.red()
