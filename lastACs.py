@@ -27,8 +27,8 @@ async def showLastSolved(ctx, user, amount):
 
 def getLastACs(user, amount):
     amount = min(10, amount)                                # limits amount of questions to 10 to prevent overworking
-    query = f"""query recentAcSubmissions($username: String!, $limit: Int!) {{
-        recentAcSubmissionList(username: $username, limit: $limit) {{
+    query = f"""query recentAcSubmissions($username: String!) {{
+        recentAcSubmissionList(username: $username) {{
           id
           title
           titleSlug
@@ -36,8 +36,7 @@ def getLastACs(user, amount):
         }}
       }}"""
     params = f"""{{
-          "username": "{user}",
-          "limit": {amount}
+          "username": "{user}"
       }}"""
     url = 'https://leetcode.com/graphql'                    # sends query and params to this url in a post request
 

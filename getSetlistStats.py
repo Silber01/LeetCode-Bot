@@ -70,13 +70,16 @@ async def getSetlistTopicStats(ctx, setlist, ind):
     topic = topicList[ind]
     problems = problems[topic]
     leetcodename = player["LEETCODENAME"]
+    with open(f"problemSetInfo/problemIDtoTutorial.json", "r") as readFile:
+        tutorials = json.load(readFile)
     embed.description = f"**{leetcodename}**'s Progress for **{topic}** (for {'Blind 75' if setlist == 'blind75' else 'Neetcode 150'}):\n\n"
     for p in problems:
         problemTitle = p["TITLE"]
         problemURL = p["URL"]
         questionSolved = "✓" if p["ID"] in playerSolved else "✘"
+        questionTutorial = tutorials[str(p["ID"])]
         problemDifficulty = p["DIFFICULTY"]
-        embed.description += f"{questionSolved} [{problemTitle}]({problemURL}) ({problemDifficulty})\n"
+        embed.description += f"{questionSolved} [{problemTitle}]({problemURL}) ({problemDifficulty}), ([Solution]({questionTutorial}))\n"
     embed.description += "\n✓ = Solved, ✘ = Not Solved. Click on the problem's name to see its page on LeetCode."
     await ctx.send(embed=embed)
 
