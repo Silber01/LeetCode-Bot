@@ -20,7 +20,7 @@ async def submit(ctx):
     msg = await ctx.send(embed=embed)
     msgContent = ""                                                 # since multiple things can be submitted at once, stack messages in this variable and send at the end
     qotd = getTodayQuestion()                                       # done here to prevent calling multiple times throughout code
-    lastSubmits = getLastACs(player["NAME"], 10)                    # gets the last 10 submissions
+    lastSubmits = getLastACs(player["NAME"], 20)                    # gets the last 20 submissions
     if checkLOTD(qotd, lastSubmits):                        # checks if player did LOTD
         if player["HASSOLVEDTODAY"]:                                # checks if player has already submitted before
             msgContent += "You have already submitted for LeetCode of the day today!\n\n"
@@ -31,12 +31,12 @@ async def submit(ctx):
             msgContent += f"Congratulations! You have earned **{givePoints(player, difficulty, True)}** points" \
                           f" for solving **{name}**!\n\n"
 
-    newSolved = checkSetlists(player, lastSubmits)
+    newSolved = checkSetlists(player, lastSubmits)                  # checks for setlists problems
     if len(newSolved) > 0:
         msgContent += "You have completed these setlist problems:\n"
         embed.colour = discord.Colour.purple()
-    for n in newSolved:
-        problemID, problemName, problemDifficulty, isInBlind75 = n
+    for n in newSolved:                                             # iterates through setlist solutions, appends to solved, and awards points
+        problemID, problemName, problemDifficulty, isInBlind75 = n  # gets information from tuple provided
         player["SOLVED"].append(int(problemID))
         msgContent += f"- **{problemName}**, a {'Blind 75 and Neetcode 150' if isInBlind75 else 'Neetcode 150'} problem " \
                       f"worth **{givePoints(player, problemDifficulty, False)} points!**\n\n"
@@ -45,7 +45,7 @@ async def submit(ctx):
         msgContent = "You do not have any valid submissions. Please do `-lotd` to see the LeetCode of the Day " \
                      "question or `-blind75` or `-neetcode150` to see valid questions for those problem sets."
         embed.colour = discord.Colour.red()
-    elif player["SCORE"] - oldScore != 0:
+    elif player["SCORE"] - oldScore != 0:                           # if score has changed, announce new points earned
         msgContent += f"You just earned {player['SCORE'] - oldScore} points! You now have a total of {player['SCORE']} points!"
     embed.description = msgContent
     setPlayer(ctx.author.id, player)                                # save data
@@ -59,7 +59,7 @@ def checkLOTD(question, lastSubmits):
             return True
     return False                                                    # return false if no submissions have LOTD slug
 
-def checkSetlists(player, lastSubmits):
+def checkSetlists(player, lastSubmits):                             # checks if any of the last submissions are in the blind75 or neetcode150 setlists
     with open("problemSetInfo/setlistProblemIDs.json", "r") as readFile:
         setlist = json.load(readFile)
     nameToID = setlist["NAME"]
@@ -68,15 +68,15 @@ def checkSetlists(player, lastSubmits):
     newSolutions = []
     for sub in lastSubmits:
         titleSlug = sub["titleSlug"]
-        if titleSlug in nameToID:
+        if titleSlug in nameToID:                                   # if it is in nameToID, it is in a setlist
             probID = int(nameToID[titleSlug])
-            if probID not in alreadySolved:
+            if probID not in alreadySolved:                         # make sure the problem isnt already submitted by the player
                 problemInfo = IDtoProblem[str(probID)]
                 name = problemInfo["TITLE"]
                 difficulty = problemInfo["DIFFICULTY"]
                 isBlind75 = problemInfo["INBLIND75"]
-                newSolutions.append((probID, name, difficulty, isBlind75))
-    return newSolutions
+                newSolutions.append((probID, name, difficulty, isBlind75))  # tuples have the problem's ID, name, difficulty, and whether it is in the blind75.
+    return newSolutions                                             # returns list of tuples
 
 
 
@@ -85,7 +85,7 @@ def givePoints(player, difficulty, isLOTD):
     EASYLOTDSCORE = 2
     MEDIUMLOTDSCORE = 3
     HARDLOTDSCORE = 5
-    multiplier = 1
+    multiplier = 1                                                  # LOTD multiplies the score given by 2
     if isLOTD:
         multiplier = 2
     if difficulty == "Easy":                                        # give out score based on difficulty
