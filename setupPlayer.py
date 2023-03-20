@@ -3,6 +3,7 @@ import os
 import discord
 import json
 from os.path import exists
+from lcUtils import *
 
 
 def setUpPlayer(ctx):
@@ -29,3 +30,14 @@ def setUpPlayer(ctx):
         playerInfo["DISCRIMINATOR"] = playerDiscriminator
         with open(f"./players/{playerID}.json", "w") as writeFile:  # save player info
             json.dump(playerInfo, writeFile)
+    else:
+        playerInfo = getPlayer(playerID)
+        changesMade = False
+        if playerName != playerInfo["NAME"]:
+            changesMade = True
+            playerInfo["NAME"] = playerName
+        if playerDiscriminator != playerInfo["DISCRIMINATOR"]:
+            changesMade = True
+            playerInfo["DISCRIMINATOR"] = playerDiscriminator
+        if changesMade:
+            setPlayer(playerID, playerInfo)
