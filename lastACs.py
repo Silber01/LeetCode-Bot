@@ -26,7 +26,7 @@ async def showLastSolved(ctx, user, amount):
 
 
 def getLastACs(user, amount):
-    amount = min(10, amount)                                # limits amount of questions to 10 to prevent overworking
+    amount = min(1000, amount)                                # limits amount of questions to 10 to prevent overworking
     query = f"""query recentAcSubmissions($username: String!) {{
         recentAcSubmissionList(username: $username) {{
           id

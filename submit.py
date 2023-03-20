@@ -20,7 +20,12 @@ async def submit(ctx):
     msg = await ctx.send(embed=embed)
     msgContent = ""                                                 # since multiple things can be submitted at once, stack messages in this variable and send at the end
     qotd = getTodayQuestion()                                       # done here to prevent calling multiple times throughout code
-    lastSubmits = getLastACs(player["NAME"], 20)                    # gets the last 20 submissions
+    lastSubmits = getLastACs(player["LEETCODENAME"], 1000)                    # gets the last 20 submissions
+    if lastSubmits == "INVALID":                                                # returns this if user doesnt exist
+        embed.colour = discord.Colour.red()
+        embed.description = "Sorry, that user does not exist."
+        await msg.edit(embed=embed)
+        return
     if checkLOTD(qotd, lastSubmits):                        # checks if player did LOTD
         if player["HASSOLVEDTODAY"]:                                # checks if player has already submitted before
             msgContent += "You have already submitted for LeetCode of the day today!\n\n"

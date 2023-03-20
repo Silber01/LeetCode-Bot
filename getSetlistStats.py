@@ -79,7 +79,7 @@ async def getSetlistTopicStats(ctx, setlist, ind):
         questionSolved = "✓" if p["ID"] in playerSolved else "✘"
         questionTutorial = tutorials[str(p["ID"])]
         problemDifficulty = p["DIFFICULTY"]
-        embed.description += f"{questionSolved} [{problemTitle}]({problemURL}) ({problemDifficulty}), ([Solution]({questionTutorial}))\n"
+        embed.description += f"{questionSolved} [{problemTitle}]({problemURL}) ({problemDifficulty}) ([Solution]({questionTutorial}))\n"
     embed.description += "\n✓ = Solved, ✘ = Not Solved. Click on the problem's name to see its page on LeetCode."
     await ctx.send(embed=embed)
 

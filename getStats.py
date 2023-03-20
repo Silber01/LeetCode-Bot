@@ -31,15 +31,16 @@ async def getStats(ctx, args):
         status = "Not Solved"
 
     if player["LEETCODENAME"]:
-        registered = "Registered"
+        registered = player["LEETCODENAME"]
     else:
         registered = "Not registered. Use `-register <LeetCode Username>` to register."
 
     embed.description = f"**{player['NAME']}#{player['DISCRIMINATOR']}**'s stats:\n"
+    embed.description += f"LeetCode Account Registered: **{registered}**\n"
     embed.description += f"Current Score: **{player['SCORE']}**\n"
     embed.description += f"Total LOTD's Solved: **{player['LOTDSSOLVED']}**\n"
     embed.description += f"Today's LOTD Status: **{status}**\n"
-    embed.description += f"Has registered with their LeetCode account: **{registered}**"
+
     embed.colour = discord.Colour.gold()
 
     await ctx.send(embed=embed)
