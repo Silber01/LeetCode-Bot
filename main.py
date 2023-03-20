@@ -8,10 +8,10 @@ import lastACs
 import registerPlayer
 import setupPlayer
 import getTodaysQuestion
-import checkServerExists
 import submit as submitFunc
 import setUpServer
-from getStats import getStats
+import leaderboard
+import getStats as getStatsFunc
 import getSetlistStats
 
 intents = discord.Intents.default()
@@ -33,7 +33,6 @@ async def on_ready():
 
 @client.before_invoke
 async def common(ctx):
-    checkServerExists.checkServerExists(ctx)
     setupPlayer.setUpPlayer(ctx)
 
 @client.command()
@@ -68,7 +67,6 @@ async def getQuestionWithID(ctx, questionID):   # gets LeetCode question with gi
 async def register(ctx, leetCodeName=None):
     await registerPlayer.handleRegister(ctx, leetCodeName, client)
 
-
 @client.command()
 async def submit(ctx):
     await submitFunc.submit(ctx)
@@ -86,8 +84,16 @@ async def lotd(ctx):
     await ctx.send(embed=embed)
 
 @client.command()
-async def stats(ctx):
-    await getStats(ctx)
+async def gtop(ctx, page="1"):
+    await leaderboard.leaderboard(ctx, page, True)
+
+@client.command()
+async def top(ctx, page="1"):
+    await leaderboard.leaderboard(ctx, page, False)
+
+@client.command()
+async def stats(ctx, *args):
+    await getStatsFunc.getStats(ctx, args)
 
 @client.command()
 async def blind75(ctx, topic=None):

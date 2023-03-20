@@ -7,11 +7,11 @@ from lcUtils import *
 
 
 def setUpPlayer(ctx):
-    playerID = str(ctx.author.id)
+    playerID = ctx.author.id
     playerName = str(ctx.author.name)
     playerDiscriminator = str(ctx.author.discriminator)
-    serverID = str(ctx.guild.id)
-    serverName = str(ctx.guild.name)
+    serverID = ctx.guild.id
+    serverName = ctx.guild.name
     if not exists(f"./servers/{serverID}.json"):                    # if the server has never been initialized, make it
         with open("./initFiles/server.json", "r") as readFile:
             serverInfo = json.load(readFile)
