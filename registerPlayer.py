@@ -27,8 +27,14 @@ async def handleRegister(ctx, leetCodeName, client):
         embed.colour = discord.Colour.green()
         await ctx.send(embed=embed)
         return
+    if playerInfo["LEETCODENAME"] is None:
+        registerPlayer(ctx, leetCodeName)
+        embed.description = f"Your LeetCode account is now registered as `{leetCodeName}`"
+        embed.colour = discord.Colour.green()
+        await ctx.send(embed=embed)
+        return
     if playerInfo["LEETCODENAME"] != leetCodeName:
-        embed.description = f"Do you want to reregister your LeetCode account as `{leetCodeName}`? WARNING: THIS WILL RESET YOUR DATA! [Y/N]"
+        embed.description = f"Do you want to reregister your LeetCode account as `{leetCodeName}`? Type yes or no.\n\n**WARNING: THIS WILL RESET YOUR STATS FOR LEETCODE BOT!!**"
         embed.colour = discord.Colour.purple()
         await ctx.send(embed=embed)
 
