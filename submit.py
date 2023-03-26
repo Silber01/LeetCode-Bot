@@ -33,6 +33,7 @@ async def submit(ctx):
         else:                                                       # reward points based on difficulty, set hasdone to true, and congratulate
             difficulty = qotd["DIFFICULTY"]
             name = qotd["QUESTIONNAME"]
+            player["LOTDSSOLVED"] += 1
             msgContent += f"Congratulations! You have earned **{givePoints(player, difficulty, True)}** points" \
                           f" for solving **{name}**!\n\n"
 

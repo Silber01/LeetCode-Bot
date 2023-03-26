@@ -45,7 +45,7 @@ async def getLeaderboard(ctx, page, players, serverName):
         return
     thisPlayer = getPlayer(ctx.author.id)
     targetPlayer = thisPlayer["NAME"], thisPlayer["SCORE"]
-
+    embed.color = discord.Colour.purple()
     end = min((pageSize * page), len(players))                      # checks to make sure it doesnt overflow
     for p in players:                                               # get all players and add them to the unsorted leaderboard
         with open(f"players/{p}", "r") as readFile:

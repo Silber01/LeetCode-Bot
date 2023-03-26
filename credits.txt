@@ -1,0 +1,8 @@
+LeetCode Bot was Created by SJSU's Software and Computer Engineering Society (SCE).
+
+Designed and organized by Daniel Slade
+Programmed by Daniel Slade, Trique Nguyen, and David Tan
+
+GitHub Link: https://github.com/Silber01/LeetCode-Bot
+
+Invite Link: https://discord.com/api/oauth2/authorize?client_id=932270316867186729&permissions=314368&scope=bot
