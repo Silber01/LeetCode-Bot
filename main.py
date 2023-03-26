@@ -44,6 +44,15 @@ async def help(ctx):                            # shows the user what commands t
     embed.colour = discord.Colour.purple()
     await ctx.send(embed=embed)
 
+@client.command()
+async def credits(ctx):                            # shows the user what commands the bot has
+    embed = getEmbed()
+    with open("credits.txt", "r") as readFile:     # help text is stored in help.txt
+        helpText = readFile.read()              # read text then return in an embedded message
+    embed.description = helpText
+    embed.colour = discord.Colour.blue()
+    await ctx.send(embed=embed)
+
 # ADMIN COMMANDS
 @client.command()
 async def setChannel(ctx):
@@ -110,6 +119,6 @@ async def neetcode150(ctx, topic=None):
     else:
         await getSetlistStats.getSetlistTopicStats(ctx, "neetcode150", topic)
 
-with open("key.txt", "r") as readFile:          # get bot token and run
+with open("devKey.txt", "r") as readFile:          # get bot token and run
     bot_token = readFile.readline()
 client.run(bot_token)
